@@ -42,7 +42,7 @@ for epoch in range(num_epochs):
         inputs = torch.cat([fg_images, bg_images])
         labels = torch.cat(
             [torch.ones(fg_images.shape[0], dtype=torch.uint8), torch.zeros(bg_images.shape[0], dtype=torch.uint8)])
-        inputs, labels = inputs.to(device), labels.to(device)
+        inputs, labels = inputs.to(device).float(), labels.to(device)
         optimizer.zero_grad()
         outputs = model(inputs)
         loss = criterion(outputs, labels)
