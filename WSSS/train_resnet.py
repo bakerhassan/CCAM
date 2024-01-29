@@ -54,6 +54,7 @@ for epoch in range(num_epochs):
     print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {running_loss / len(train_loader)}")
 
 # Evaluation on the test set
+torch.save(model.state_dict(), "texture")
 model.eval()
 correct = 0
 total = 0
@@ -65,7 +66,7 @@ with torch.no_grad():
         labels = torch.cat(
             [torch.ones(fg_images.shape[0], dtype=torch.uint8), torch.zeros(bg_images.shape[0], dtype=torch.uint8)])
         inputs, labels = inputs.to(device).float(), labels.to(device)
-        outputs = model(inputs)
+        outputs = model(inputs)[1]
         _, predicted = torch.max(outputs.data, 1)
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
