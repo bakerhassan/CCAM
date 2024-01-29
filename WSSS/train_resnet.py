@@ -45,6 +45,8 @@ for epoch in range(num_epochs):
         inputs, labels = inputs.to(device).float(), labels.to(device)
         optimizer.zero_grad()
         outputs = model(inputs)
+        print(outputs[0].shape)
+        print(outputs[1].shape)
         loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
