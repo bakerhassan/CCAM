@@ -11,7 +11,7 @@ from torchvision import transforms
 from tensorboardX import SummaryWriter
 
 from torch.utils.data import DataLoader
-from datamodules.fgbg_datamodule import ForegroundTextureDataModule
+from WSSS.datamodules.fgbg_datamodule import ForegroundTextureDataModule
 from utils import *
 from core.datasets import *
 from core.model import *
