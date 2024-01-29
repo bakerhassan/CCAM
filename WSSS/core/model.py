@@ -61,7 +61,7 @@ class ResNetSeries(nn.Module):
         x = self.layer2(x)
         x1 = self.layer3(x)
         x2 = self.layer4(x1)
-        print(x.shape,x2.shape)
+        print(x1.shape,x2.shape)
         return torch.cat([x2, x1], dim=1)
 
 
