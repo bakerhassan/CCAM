@@ -1,4 +1,4 @@
-from .resnet import *
+from WSSS.core.resnet import *
 import torch.nn as nn
 import torch
 import torch.nn.functional as F
@@ -34,10 +34,10 @@ class ResNetSeries(nn.Module):
             model.load_state_dict(checkpoint['state_dict'], strict=False)
         elif pretrained == 'texture':
             print(f'Loading unsupervised {pretrained} pretrained parameters!')
-            #model = resnet50(pretrained=False)
-            #model.conv1 = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
-            model = torch.load('texture')
-            # model.load_state_dict(checkpoint, strict=False)
+            model = resnet50(pretrained=False)
+            model.conv1 = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
+            checkpoint = torch.load('texture')
+            model.load_state_dict(checkpoint, strict=False)
         else:
             raise NotImplementedError
 
@@ -61,7 +61,7 @@ class ResNetSeries(nn.Module):
         x = self.layer2(x)
         x1 = self.layer3(x)
         x2 = self.layer4(x1)
-        print(x1.shape,x2.shape)
+        print(x1.shape, x2.shape)
         return torch.cat([x2, x1], dim=1)
 
 

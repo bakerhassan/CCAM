@@ -4,7 +4,7 @@ import torch.optim as optim
 from torchvision import datasets, transforms, models
 
 from WSSS.datamodules.fgbg_datamodule import ForegroundTextureDataModule
-
+from WSSS.core.resnet import resnet50
 # Set device to GPU if available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -17,7 +17,7 @@ module = ForegroundTextureDataModule(transforms=transform)
 train_loader, val_loader, test_loader = module.return_dataloaders()
 
 # Load pre-trained ResNet-50 model
-model = models.resnet50(pretrained=False)
+model = resnet50(pretrained=False)
 model.conv1 = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
 
 # Modify the final fully connected layer for two classes
@@ -70,6 +70,6 @@ with torch.no_grad():
         total += labels.size(0)
         correct += (predicted == labels).sum().item()
 
-torch.save(model, "texture")
+torch.save(model.state_dict(), "texture")
 accuracy = correct / total
 print(f"Test Accuracy: {accuracy}")
