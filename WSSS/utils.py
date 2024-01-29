@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
-from tools.ai.torch_utils import *
-from tools.ai.demo_utils import *
+from WSSS.tools.ai.torch_utils import *
+from WSSS.tools.ai.demo_utils import *
 from sklearn.metrics import average_precision_score
 from torchvision import utils
 
