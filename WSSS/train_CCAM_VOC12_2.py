@@ -13,12 +13,12 @@ from tensorboardX import SummaryWriter
 from torch.utils.data import DataLoader
 from WSSS.datamodules.fgbg_datamodule import ForegroundTextureDataModule
 from WSSS.utils import *
-from core.datasets import *
-from core.model import *
-from tools.general.io_utils import *
-from tools.general.time_utils import *
-from tools.general.json_utils import *
-from core.loss import *
+from WSSS.core.datasets import *
+from WSSS.core.model import *
+from WSSS.tools.general.io_utils import *
+from WSSS.tools.general.time_utils import *
+from WSSS.tools.general.json_utils import *
+from WSSS.core.loss import *
 
 from WSSS.tools.ai.log_utils import *
 from WSSS.tools.ai.demo_utils import *
