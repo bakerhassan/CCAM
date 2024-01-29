@@ -12,7 +12,7 @@ from tensorboardX import SummaryWriter
 
 from torch.utils.data import DataLoader
 from WSSS.datamodules.fgbg_datamodule import ForegroundTextureDataModule
-from utils import *
+from WSSS.utils import *
 from core.datasets import *
 from core.model import *
 from tools.general.io_utils import *
