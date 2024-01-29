@@ -21,21 +21,21 @@ from torchvision import transforms
 
 from torch.utils.data import DataLoader
 
-from core.model import *
-from core.datasets import *
+from WSSS.core.model import *
+from WSSS.core.datasets import *
 
-from tools.general.io_utils import *
-from tools.general.time_utils import *
-from tools.general.json_utils import *
+from WSSS.tools.general.io_utils import *
+from WSSS.tools.general.time_utils import *
+from WSSS.tools.general.json_utils import *
 
-from tools.ai.log_utils import *
-from tools.ai.demo_utils import *
-from tools.ai.optim_utils import *
-from tools.ai.torch_utils import *
-from tools.ai.evaluate_utils import *
+from WSSS.tools.ai.log_utils import *
+from WSSS.tools.ai.demo_utils import *
+from WSSS.tools.ai.optim_utils import *
+from WSSS.tools.ai.torch_utils import *
+from WSSS.tools.ai.evaluate_utils import *
 
-from tools.ai.augment_utils import *
-from tools.ai.randaugment import *
+from WSSS.tools.ai.augment_utils import *
+from WSSS.tools.ai.randaugment import *
 
 palette = np.array([[0, 0, 0],
                     [128, 0, 0],

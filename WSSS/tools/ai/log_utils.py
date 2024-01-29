@@ -2,7 +2,7 @@
 # author : Sanghyeon Jo <josanghyeokn@gmail.com>
 
 import numpy as np
-from tools.general.txt_utils import add_txt
+from WSSS.tools.general.txt_utils import add_txt
 
 def log_print(message, path):
     """This function shows message and saves message.

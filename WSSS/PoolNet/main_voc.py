@@ -1,7 +1,7 @@
 import argparse
 import os
-from dataset.dataset import get_loader_voc
-from solver import Solver
+from WSSS.PoolNet.dataset.dataset import get_loader_voc
+from WSSS.PoolNet.solver import Solver
 
 def main(config):
     if config.mode == 'train':

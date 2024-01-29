@@ -6,8 +6,8 @@ import math
 from torch.autograd import Variable
 import numpy as np
 
-from .deeplab_resnet import resnet50_locate
-from .vgg import vgg16_locate
+from WSSS.PoolNet.networks.deeplab_resnet import resnet50_locate
+from WSSS.PoolNet.networks.vgg import vgg16_locate
 
 
 config_vgg = {'convert': [[128,256,512,512,512],[64,128,256,512,512]], 'deep_pool': [[512, 512, 256, 128], [512, 256, 128, 128], [True, True, True, False], [True, True, True, False]], 'score': 128}  # no convert layer, no conv6

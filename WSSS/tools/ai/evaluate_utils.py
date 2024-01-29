@@ -1,6 +1,6 @@
 import numpy as np
 
-from tools.general.json_utils import read_json
+from WSSS.tools.general.json_utils import read_json
 
 def calculate_for_tags(pred_tags, gt_tags):
     """This function calculates precision, recall, and f1-score using tags.

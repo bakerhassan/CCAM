@@ -9,12 +9,12 @@ import numpy as np
 
 from PIL import Image
 
-from tools.ai.augment_utils import *
-from tools.ai.torch_utils import one_hot_embedding
+from WSSS.tools.ai.augment_utils import *
+from WSSS.tools.ai.torch_utils import one_hot_embedding
 
-from tools.general.xml_utils import read_xml
-from tools.general.json_utils import read_json
-from tools.dataset.voc_utils import get_color_map_dic
+from WSSS.tools.general.xml_utils import read_xml
+from WSSS.tools.general.json_utils import read_json
+from WSSS.tools.dataset.voc_utils import get_color_map_dic
 
 class Iterator:
     def __init__(self, loader):

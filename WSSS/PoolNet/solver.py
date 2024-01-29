@@ -1,7 +1,7 @@
 import torch
 from torch.optim import Adam, SGD
 from torch.autograd import Variable
-from networks.poolnet import build_model, weights_init
+from WSSS.PoolNet.networks.poolnet import build_model, weights_init
 import numpy as np
 import os
 import cv2
