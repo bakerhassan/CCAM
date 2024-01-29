@@ -32,7 +32,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # Training loop
-num_epochs = 10
+num_epochs = 5
 for epoch in range(num_epochs):
     model.train()
     running_loss = 0.0
@@ -58,8 +58,13 @@ model.eval()
 correct = 0
 total = 0
 with torch.no_grad():
-    for inputs, labels in test_loader:
-        inputs, labels = inputs.to(device), labels.to(device)
+    for (fg_images, bg_images, masks,
+         bg_bg_labels, bg_fg_labels,
+         labels) in test_loader:
+        inputs = torch.cat([fg_images, bg_images])
+        labels = torch.cat(
+            [torch.ones(fg_images.shape[0], dtype=torch.uint8), torch.zeros(bg_images.shape[0], dtype=torch.uint8)])
+        inputs, labels = inputs.to(device).float(), labels.to(device)
         outputs = model(inputs)
         _, predicted = torch.max(outputs.data, 1)
         total += labels.size(0)
