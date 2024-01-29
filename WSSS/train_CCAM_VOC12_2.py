@@ -29,7 +29,7 @@ from WSSS.tools.ai.augment_utils import *
 from WSSS.tools.ai.randaugment import *
 from shutil import copyfile
 import matplotlib.pyplot as plt
-from optimizer import PolyOptimizer
+from WSSS.optimizer import PolyOptimizer
 
 os.environ["NUMEXPR_NUM_THREADS"] = "8"
 parser = argparse.ArgumentParser()
