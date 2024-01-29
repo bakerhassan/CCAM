@@ -13,7 +13,7 @@ transform = transforms.Compose([
     transforms.Resize((224, 224))])
 
 # Load your dataset (replace 'path_to_dataset' with the actual path)
-module = ForegroundTextureDataModule(transforms=transform)
+module = ForegroundTextureDataModule(transforms=transform,batch_size=512)
 train_loader, val_loader, test_loader = module.return_dataloaders()
 
 # Load pre-trained ResNet-50 model
