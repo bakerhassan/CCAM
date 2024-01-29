@@ -35,6 +35,7 @@ class ResNetSeries(nn.Module):
         elif pretrained == 'texture':
             print(f'Loading unsupervised {pretrained} pretrained parameters!')
             model = resnet50(pretrained=False)
+            model.conv1 = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
             checkpoint = torch.load('texture')
             model.load_state_dict(checkpoint, strict=False)
         else:
