@@ -31,9 +31,9 @@ class CustomDataset(Dataset):
             self.bg_fg_labels[
                 index], self.fg_labels[index]
         if self.transform:
-            fg_images = self.transform(fg_images)
-            bg_images = self.transform(bg_images)
-            masks = self.transform(masks)
+            fg_images = self.transform(fg_images.float())
+            bg_images = self.transform(bg_images.float())
+            masks = self.transform(masks.float())
         return fg_images, bg_images, masks, bg_bg_labels, bg_fg_labels, fg_labels
 
 
