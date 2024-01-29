@@ -29,6 +29,11 @@ class ResNetSeries(nn.Module):
             model = resnet50(pretrained=False)
             checkpoint = torch.load('detco_200ep.pth', map_location="cpu")
             model.load_state_dict(checkpoint['state_dict'], strict=False)
+        elif pretrained == 'texture':
+            print(f'Loading supervised {pretrained} pretrained parameters!')
+            model = resnet50(pretrained=False)
+            checkpoint = torch.load('texture.pth', map_location="cpu")
+            model.load_state_dict(checkpoint['state_dict'], strict=False)
         else:
             raise NotImplementedError
 
