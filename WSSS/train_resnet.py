@@ -36,10 +36,12 @@ num_epochs = 10
 for epoch in range(num_epochs):
     model.train()
     running_loss = 0.0
-    for (inputs, bg_images, masks,
+    for (fg_images, bg_images, masks,
          bg_bg_labels, bg_fg_labels,
          labels) in train_loader:
-        labels = (masks.to(torch.float).mean((1, 2, 3)) == 1).to(torch.uint8)
+        inputs = torch.cat([fg_images, bg_images])
+        labels = torch.cat(
+            [torch.ones(fg_images.shape[0], dtype=torch.uint8), torch.zeros(bg_images.shape[0], dtype=torch.uint8)])
         inputs, labels = inputs.to(device), labels.to(device)
         optimizer.zero_grad()
         outputs = model(inputs)
