@@ -2,6 +2,8 @@ from .resnet import *
 import torch.nn as nn
 import torch
 import torch.nn.functional as F
+
+
 def conv3x3(in_planes, out_planes, stride=1, groups=1, dilation=1):
     """3x3 convolution with padding"""
     return nn.Conv2d(in_planes, out_planes, kernel_size=3, stride=stride,
@@ -11,6 +13,7 @@ def conv3x3(in_planes, out_planes, stride=1, groups=1, dilation=1):
 def conv1x1(in_planes, out_planes, stride=1):
     """1x1 convolution"""
     return nn.Conv2d(in_planes, out_planes, kernel_size=1, stride=stride, bias=False)
+
 
 class ResNetSeries(nn.Module):
     def __init__(self, pretrained):
@@ -29,6 +32,11 @@ class ResNetSeries(nn.Module):
             model = resnet50(pretrained=False)
             checkpoint = torch.load('detco_200ep.pth', map_location="cpu")
             model.load_state_dict(checkpoint['state_dict'], strict=False)
+        elif pretrained == 'texture':
+            print(f'Loading unsupervised {pretrained} pretrained parameters!')
+            model = resnet50(pretrained=False)
+            checkpoint = torch.load('texture')
+            model.load_state_dict(checkpoint, strict=False)
         else:
             raise NotImplementedError
 
@@ -55,6 +63,7 @@ class ResNetSeries(nn.Module):
 
         return torch.cat([x2, x1], dim=1)
 
+
 class Disentangler(nn.Module):
     def __init__(self, cin):
         super(Disentangler, self).__init__()
@@ -69,10 +78,10 @@ class Disentangler(nn.Module):
         else:
             ccam = torch.sigmoid(self.bn_head(self.activation_head(x)))
 
-        ccam_ = ccam.reshape(N, 1, H * W)                          # [N, 1, H*W]
-        x = x.reshape(N, C, H * W).permute(0, 2, 1).contiguous()   # [N, H*W, C]
-        fg_feats = torch.matmul(ccam_, x) / (H * W)                # [N, 1, C]
-        bg_feats = torch.matmul(1 - ccam_, x) / (H * W)            # [N, 1, C]
+        ccam_ = ccam.reshape(N, 1, H * W)  # [N, 1, H*W]
+        x = x.reshape(N, C, H * W).permute(0, 2, 1).contiguous()  # [N, H*W, C]
+        fg_feats = torch.matmul(ccam_, x) / (H * W)  # [N, 1, C]
+        bg_feats = torch.matmul(1 - ccam_, x) / (H * W)  # [N, 1, C]
 
         return fg_feats.reshape(x.size(0), -1), bg_feats.reshape(x.size(0), -1), ccam
 
@@ -112,5 +121,5 @@ class Network(nn.Module):
         return groups
 
 
-def get_model(pretrained, cin=2048+1024):
+def get_model(pretrained, cin=2048 + 1024):
     return Network(pretrained=pretrained, cin=cin)
