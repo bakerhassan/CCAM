@@ -20,13 +20,13 @@ from tools.general.time_utils import *
 from tools.general.json_utils import *
 from core.loss import *
 
-from tools.ai.log_utils import *
-from tools.ai.demo_utils import *
-from tools.ai.torch_utils import *
-from tools.ai.evaluate_utils import *
+from WSSS.tools.ai.log_utils import *
+from WSSS.tools.ai.demo_utils import *
+from WSSS.tools.ai.torch_utils import *
+from WSSS.tools.ai.evaluate_utils import *
 
-from tools.ai.augment_utils import *
-from tools.ai.randaugment import *
+from WSSS.tools.ai.augment_utils import *
+from WSSS.tools.ai.randaugment import *
 from shutil import copyfile
 import matplotlib.pyplot as plt
 from optimizer import PolyOptimizer
