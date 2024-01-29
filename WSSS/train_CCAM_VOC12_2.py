@@ -105,11 +105,10 @@ if __name__ == '__main__':
     # Transform, Dataset, DataLoader
     ###################################################################################
 
-    test_transform = transforms.Compose([
-        Top_Left_Crop_For_Segmentation(args.image_size),
-        Transpose_For_Segmentation()
-    ])
-
+    # test_transform = transforms.Compose([
+    #     Top_Left_Crop_For_Segmentation(args.image_size),
+    # ])
+    test_transform = None
     # data augmentation
     train_transform = transforms.Compose([
         transforms.Resize(size=(512, 512)),
