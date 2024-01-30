@@ -35,7 +35,7 @@ optimizer = optim.Adam(model.parameters(), lr=0.001)
 scheduler = StepLR(optimizer, step_size=5, gamma=0.5)
 # Training loop
 num_epochs = 30
-min_accuracy = torch.inf
+min_val_loss = torch.inf
 for epoch in range(num_epochs):
     model.train()
     running_loss = 0.0
@@ -53,12 +53,12 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
         running_loss += loss.item()
-    scheduler.step()
     # Print training loss for each epoch
     print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {running_loss / len(train_loader)}")
 
     correct = 0
     total = 0
+    val_loss = 0
     model.eval()
     with torch.no_grad():
         for (fg_images, bg_images, masks,
@@ -70,15 +70,19 @@ for epoch in range(num_epochs):
             labels = torch.cat([labels, bg_bg_labels + 10])
             inputs, labels = inputs.to(device).float(), labels.to(device)
             outputs = model(inputs)[1]
+            val_loss += criterion(outputs, labels).item()
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted == labels).sum().item()
         accuracy = correct / total
+        val_loss = val_loss / total
         print(f"Validation Accuracy: {accuracy}")
-        if accuracy < min_accuracy:
-            min_accuracy = accuracy
+        if val_loss < min_val_loss:
+            print(f"Validation loss has decreased in {epoch}, from {min_val_loss} --> {val_loss}. Saving the model...")
+            min_val_loss = val_loss
             torch.save(model.state_dict(), "texture")
 
+    scheduler.step(val_loss)
     model.train()
 
 # Evaluation on the test set
