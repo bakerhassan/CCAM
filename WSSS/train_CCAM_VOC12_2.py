@@ -111,9 +111,9 @@ if __name__ == '__main__':
     test_transform = None
     # data augmentation
     train_transform = transforms.Compose([
-        transforms.Resize(size=(512, 512)),
+        transforms.Resize(size=(244, 244)),
         transforms.RandomHorizontalFlip(),
-        transforms.RandomCrop(size=(448, 448)),
+        transforms.RandomCrop(size=(195, 195)),
     ])
 
     module = ForegroundTextureDataModule(transforms=train_transform)
