@@ -5,6 +5,7 @@ from torchvision import datasets, transforms, models
 
 from WSSS.datamodules.fgbg_datamodule import ForegroundTextureDataModule
 from WSSS.core.resnet import resnet50
+
 # Set device to GPU if available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -22,7 +23,7 @@ model.conv1 = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3)
 
 # Modify the final fully connected layer for two classes
 num_features = model.fc.in_features
-model.fc = nn.Linear(num_features, 2)  # Assuming 2 classes
+model.fc = nn.Linear(num_features, 20)  # Assuming 20 classes
 
 # Send the model to the device
 model = model.to(device)
@@ -40,8 +41,9 @@ for epoch in range(num_epochs):
          bg_bg_labels, bg_fg_labels,
          labels) in train_loader:
         inputs = torch.cat([fg_images, bg_images])
-        labels = torch.cat(
-            [torch.ones(fg_images.shape[0], dtype=torch.uint8), torch.zeros(bg_images.shape[0], dtype=torch.uint8)])
+        # labels = torch.cat(
+        #     [torch.ones(fg_images.shape[0], dtype=torch.uint8), torch.zeros(bg_images.shape[0], dtype=torch.uint8)])
+        labels = torch.cat([labels, bg_fg_labels + 10])
         inputs, labels = inputs.to(device).float(), labels.to(device)
         optimizer.zero_grad()
         outputs = model(inputs)
@@ -63,8 +65,9 @@ with torch.no_grad():
          bg_bg_labels, bg_fg_labels,
          labels) in test_loader:
         inputs = torch.cat([fg_images, bg_images])
-        labels = torch.cat(
-            [torch.ones(fg_images.shape[0], dtype=torch.uint8), torch.zeros(bg_images.shape[0], dtype=torch.uint8)])
+        # labels = torch.cat(
+        #    [torch.ones(fg_images.shape[0], dtype=torch.uint8), torch.zeros(bg_images.shape[0], dtype=torch.uint8)])
+        labels = torch.cat([labels, bg_fg_labels + 10])
         inputs, labels = inputs.to(device).float(), labels.to(device)
         outputs = model(inputs)[1]
         _, predicted = torch.max(outputs.data, 1)
