@@ -34,7 +34,7 @@ criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
 scheduler = StepLR(optimizer, step_size=5, gamma=0.5)
 # Training loop
-num_epochs = 30
+num_epochs = 20
 min_val_loss = torch.inf
 for epoch in range(num_epochs):
     model.train()
