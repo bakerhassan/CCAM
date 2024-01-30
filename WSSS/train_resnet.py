@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torchvision import datasets, transforms, models
+from torch.optim.lr_scheduler import StepLR
 
 from WSSS.datamodules.fgbg_datamodule import ForegroundTextureDataModule
 from WSSS.core.resnet import resnet50
@@ -31,9 +32,10 @@ model = model.to(device)
 # Define loss function and optimizer
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters(), lr=0.001)
-
+scheduler = StepLR(optimizer, step_size=5, gamma=0.5)
 # Training loop
-num_epochs = 5
+num_epochs = 30
+min_accuracy = torch.inf
 for epoch in range(num_epochs):
     model.train()
     running_loss = 0.0
@@ -43,7 +45,7 @@ for epoch in range(num_epochs):
         inputs = torch.cat([fg_images, bg_images])
         # labels = torch.cat(
         #     [torch.ones(fg_images.shape[0], dtype=torch.uint8), torch.zeros(bg_images.shape[0], dtype=torch.uint8)])
-        labels = torch.cat([labels, bg_fg_labels + 10])
+        labels = torch.cat([labels, bg_bg_labels + 10])
         inputs, labels = inputs.to(device).float(), labels.to(device)
         optimizer.zero_grad()
         outputs = model(inputs)
@@ -51,12 +53,35 @@ for epoch in range(num_epochs):
         loss.backward()
         optimizer.step()
         running_loss += loss.item()
-
+    scheduler.step()
     # Print training loss for each epoch
     print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {running_loss / len(train_loader)}")
 
+    correct = 0
+    total = 0
+    model.eval()
+    with torch.no_grad():
+        for (fg_images, bg_images, masks,
+             bg_bg_labels, bg_fg_labels,
+             labels) in val_loader:
+            inputs = torch.cat([fg_images, bg_images])
+            # labels = torch.cat(
+            #    [torch.ones(fg_images.shape[0], dtype=torch.uint8), torch.zeros(bg_images.shape[0], dtype=torch.uint8)])
+            labels = torch.cat([labels, bg_bg_labels + 10])
+            inputs, labels = inputs.to(device).float(), labels.to(device)
+            outputs = model(inputs)[1]
+            _, predicted = torch.max(outputs.data, 1)
+            total += labels.size(0)
+            correct += (predicted == labels).sum().item()
+        accuracy = correct / total
+        print(f"Validation Accuracy: {accuracy}")
+        if accuracy < min_accuracy:
+            min_accuracy = accuracy
+            torch.save(model.state_dict(), "texture")
+
+    model.train()
+
 # Evaluation on the test set
-torch.save(model.state_dict(), "texture")
 model.eval()
 correct = 0
 total = 0
