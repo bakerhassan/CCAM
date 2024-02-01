@@ -38,7 +38,7 @@ class ResNetSeries(nn.Module):
             model.conv1 = nn.Conv2d(1, 64, kernel_size=(7, 7), stride=(2, 2), padding=(3, 3), bias=False)
             num_features = model.fc.in_features
             model.fc = nn.Linear(num_features, 20)  # Assuming 2 classes
-            checkpoint = torch.load('texture')
+            checkpoint = torch.load('texture_fashionmnist')
             model.load_state_dict(checkpoint, strict=False)
         else:
             raise NotImplementedError
