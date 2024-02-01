@@ -116,10 +116,10 @@ if __name__ == '__main__':
         transforms.RandomCrop(size=(195, 195)),
     ])
 
-    module = ForegroundTextureDataModule(transforms=train_transform)
+    module = ForegroundTextureDataModule(transforms=train_transform, dataset_type='FashionMNIST')
     train_loader, _, _ = module.return_dataloaders()
 
-    module = ForegroundTextureDataModule(transforms=test_transform)
+    module = ForegroundTextureDataModule(transforms=test_transform, dataset_type='FashionMNIST')
     _, train_loader_for_seg, valid_loader_for_seg = module.return_dataloaders()
 
     log_func('[i] mean values is {}'.format(imagenet_mean))
