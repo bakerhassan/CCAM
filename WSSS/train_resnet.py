@@ -80,7 +80,7 @@ for epoch in range(num_epochs):
         if val_loss < min_val_loss:
             print(f"Validation loss has decreased in {epoch}, from {min_val_loss} --> {val_loss}. Saving the model...")
             min_val_loss = val_loss
-            torch.save(model.state_dict(), "texture")
+            torch.save(model.state_dict(), "texture_fashionmnist")
 
     scheduler.step(val_loss)
     model.train()
